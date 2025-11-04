@@ -1,8 +1,32 @@
+import { useState } from "react";
 import questions from "./question"
 
 
 function Quiz() {
-    const quizQuestion = questions[0];
+
+    const [currentQues, setCurrentQues] = useState(0);
+    const [score, setScore] = useState(0);
+    const [showScore, setShowScore] = useState(false);
+
+
+
+    const quizQuestion = questions[currentQues];
+
+    const handleAnswer = (option) => {
+        if(option === quizQuestion.answer){
+            setScore(score + 1);
+        }
+    }
+
+    const handleNext = () => {
+        const nextQues = currentQues + 1;
+        if(nextQues < questions.length){
+            setCurrentQues(nextQues);
+        }
+        else {
+            setShowScore(true);
+        }
+    }
 
   return (
     <div>
@@ -10,30 +34,50 @@ function Quiz() {
             <h1>Quiz App</h1>
             <div>
                 <div>
-                    <h3>Question: 1/10</h3>
+                    <h3>Question: {currentQues + 1}/{questions.length} </h3>
                 </div>
                 <div>
-                    <h3>Score: 0 </h3>
+                    <h3>Score: {score} </h3>
                 </div>
             </div>
         </div>
 
         <div className="part-2">
             {
-                quizQuestion && quizQuestion.question.map((ques) => {
-                    <div key={ques.id}>
-                        <h2>{ques.questionText}</h2>
-                        <div>
-                            {
-                                ques.answerOptions.map((ans) => (
-                                    <button key={ans.id}>{ans.answerText}</button>
-                                ))
-                            }
-                        </div>
+                showScore ? (
+                    <div className="score-section">
+                        You scored {score} out of {questions.length}
                     </div>
-                })
+                ) 
+                : 
+                (
+                    <div className="question-section">
+                        <div key={quizQuestion.id}>
+                            <h2>{quizQuestion.id}</h2>
+                            <h2>{quizQuestion.question}</h2>
+                            <div>
+                                {
+                                    quizQuestion.options.map((option, index) => (
+                                        <button onClick={() => handleAnswer(option)} 
+                                            key={index} > 
+                                            {option}
+                                        </button>
+                                    )) 
+                                }
+                            </div>
+                        </div>
+                        
+                    </div>
+                )   
             }
         </div>
+
+        <div className="part-3">
+            <button onClick={handleNext}>
+                Next
+            </button>
+        </div>
+        
     </div>
   )
 }
