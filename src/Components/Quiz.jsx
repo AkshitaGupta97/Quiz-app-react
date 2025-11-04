@@ -53,7 +53,7 @@ function Quiz() {
             <h1>Quiz App</h1>
             <div className="part-1-content">
                 <div>
-                    <h3>Question: <span>{currentQues + 1}/{questions.length}</span> </h3>
+                    <h3>Question: <span>{currentQues + 1} / {questions.length}</span> </h3>
                 </div>
                 <div>
                     <h3>Score: <span>{score}</span> </h3>
